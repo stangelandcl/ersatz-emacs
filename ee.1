@@ -1,0 +1,103 @@
+.\" All source code and documentation to 'Ersatz Emacs' is in the Public
+.\" Domain, as were all the original sources I used. I might be a rabid
+.\" Stallmanite weenie, but it would be improper to publish this under a
+.\" difference licence than it was given to me with.
+.\" -- Chris Baird,, <cjb@brushtail.apana.org.au>
+.\"
+.Dd September 11, 2000
+.Os Miscellaneous\ Software
+.Dt EE 1
+.Sh NAME
+.Nm ee
+.Nd Ersatz Emacs, the simple text editor
+.Sh SYNOPSIS
+.Nm ee
+.Op Ar
+.Sh DESCRIPTION
+Ersatz Emacs is a very minimal imitation of the famous
+.Tn GNU Emacs
+editor. Unlike most popular Emacs derivatives, Ersatz strives to use as little
+system resources as possible and be simple enough for the casual programmer to
+understand, yet still include all the functionality required for most text
+editing jobs. You are encouraged to study the software sources and add any
+missing
+.Qq essential
+features to produce your own perfect editor.
+.Pp
+If invoked with no file arguments, the editor creates a
+.Qq main
+buffer that should be renamed
+.Ic ( C-x n )
+and written to disk
+.Ic ( C-x C-s )
+if the user intends to preserve the contents.
+.Sh ENVIRONMENT
+.Ev Em TERM
+informs the editor to capabilities of the user's terminal. Also the values of
+.Ev Em TERMCAP , TERMPATH ,
+and
+.Ev Em HOME
+must be sane for
+.Xr termcap 5
+to function properly.
+.Sh FILES
+None, aside from those implied by
+.Xr termcap 5 .
+.Pp
+Your system manager should have copied the supplied printer-ready chart of key
+bindings to
+.Pa /usr/local/share/ERSATZ.keys .
+Carry this with you at all times until everything is permanent etched in
+wetware. One could also learn much from the tutorial in-built to
+.Tn GNU Emacs ,
+as Ersatz supports many
+.Qq standard
+bindings.
+.Sh DIAGNOSTICS
+.Bl -ohang
+.It Em Unbelievable screen size
+The terminal options (see
+.Xr termios 4 )
+have undefined column or row size information, and is usually a sign of a
+broken configuration somewhere. A temporary fix on UN*X is to type at the
+shell:
+.Ic stty cols 80 rows 24
+.It Em Environment variable TERM not defined
+As it says. The majority of users would have TERM = vt100 or
+thereabouts.
+.It Em Insufficient termcap (needs cl & cm abilities)
+Ersatz requires a terminal that can clear the screen and position the cursor. A
+serious system problem if not logged-in via a line-printer.
+.It Em Terminal description too big
+.It Em Can't read terminal capabilities
+.It Em Can't set terminal mode
+.It Em Can't restore terminal flags
+All the above are likely to involve a serious system problem.
+.El
+.Sh AUTHORS
+Ersatz is a derivative work of MicroEMACS 3.6, as released to mod.sources and
+the Public Domain by Daniel Lawrence in 1986, and is itself based on the work
+of Steve Wilhite and George Jones to MicroEMACS 2.0 (then also public domain)
+by Dave Conroy.
+.Pp
+Chris Baird <cjb@brushtail.apana.org.au> stripped out most of the features he
+personally never used from 3.6, played with it for twelve years, completed the
+key-bindings chart, wrote a man-page, and produced what you see today. His
+additions are in the Public Domain as well.
+.Sh BUGS
+None known. There are however a few discrepancies in imitating
+.Tn GNU Emacs .
+.Pp
+If you should find a juicy bug, please email a good description to Chris. He
+however has little interest incorporating new features unless they repair
+serious problems or simplify the program further.
+.Sh SECURITY CONSIDERATIONS
+As file writes are done 
+.Qq over the top of
+the existing file, the file ownership and permission bits are preserved,
+however if an error should occur during a save this may leave a damaged file on
+the filesystem.
+.Pp
+However, be assured that Ersatz
+.Em does not
+do stupid things like automatic word-wrap.

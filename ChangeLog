@@ -1,0 +1,10 @@
+2004-01-10  Chris Baird  <cjb@brushtail.apana.org.au>
+
+	* beginning of lint-ification.
+	  Start work on making 64-bit clean.
+
+2001-01-09  Chris Baird  <cjb@brushtail.apana.org.au>
+
+	* removed unused NBIND/names[] definitions.
+	
+
