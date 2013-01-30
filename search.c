@@ -15,6 +15,7 @@ extern int forwchar (int f, int n);
 extern int ldelete (int n, int kflag);
 extern int lnewline ();
 extern int linsert (int n, int c);
+extern void update();
 
 int forwsearch (int f, int n);
 int forwhunt (int f, int n);
@@ -22,7 +23,7 @@ int backsearch (int f, int n);
 int backhunt (int f, int n);
 int bsearch (int f, int n);
 int eq (int bc, int pc);
-int readpattern (char *prompt);
+int readpattern (char *prompt, char eolchar);
 int sreplace (int f, int n);
 int qreplace (int f, int n);
 int replaces (int kind, int f, int n);
@@ -46,20 +47,40 @@ int forwsearch (int f, int n)
   if (n < 1)			/* search backwards */
     return (backsearch (f, -n));
 
-  /* ask the user for the text of a pattern */
-  if ((status = readpattern ("Search")) != TRUE)
-    return (status);
+  int havepat = (pat[0] != 0);
 
-  /* search for the pattern */
-  while (n-- > 0)
+
+
+    if(!havepat)
+    {
+      /* ask the user for the text of a pattern */
+      if ((status = readpattern ("Search",'S' -'@')) != TRUE)
+       return (status);
+    }
+
+
+    /* search for the pattern */
+    while (n-- > 0)
     {
       if ((status = forscan (&pat[0], PTEND)) == FALSE)
 	break;
     }
 
-  /* and complain if not there */
-  if (status == FALSE)
-    mlwrite ("Not found");
+    /* and complain if not there */
+    if (status == FALSE)
+      mlwrite ("Not found");  
+
+    if(havepat){
+    update();
+    /* ask the user for the text of a pattern */
+    if ((status = readpattern ("Search",'S'-'@')) != TRUE)
+      return (status);
+    }
+
+
+
+  
+
   return (status);
 }
 
@@ -107,7 +128,7 @@ int backsearch (int f, int n)
   if (n < 1)
     return (forwsearch (f, -n));
 
-  if ((s = readpattern("Reverse search")) != TRUE)/* get a pattern to search */
+  if ((s = readpattern("Reverse search",'R'-'@')) != TRUE)/* get a pattern to search */
     return (s);
 
   return bsearch (f, n);	/* and go search for it */
@@ -231,7 +252,7 @@ int eq (int bc, int pc)
  * expansion. change to using <ESC> to delemit the end-of-pattern to allow
  * <NL>s in the search string
  */
-int readpattern (char *prompt)
+int readpattern (char *prompt, char eolchar)
 {
   char tpat[NPAT + 20];
   int s;
@@ -239,9 +260,9 @@ int readpattern (char *prompt)
   strncpy (tpat, prompt, NPAT-12); /* copy prompt to output string */
   strncat (tpat, " [", 3);	/* build new prompt string */
   expandp (&pat[0], &tpat[strlen (tpat)], NPAT / 2); /* add old pattern */
-  strncat (tpat, "]<ESC>: ", 9);
+  strncat (tpat, "]: ", 9);
 
-  s = mlreplyt (tpat, tpat, NPAT, 27); /* Read pattern */
+  s = mlreplyt (tpat, tpat, NPAT, eolchar); /* Read pattern */
 
   if (s == TRUE)		/* Specified */
     strncpy (pat, tpat, NPAT);
@@ -291,13 +312,13 @@ int replaces (int kind, int f, int n)
     return (FALSE);
 
   /* ask the user for the text of a pattern */
-  if ((s = readpattern ((kind == FALSE ? "Replace" : "Query replace"))) != TRUE)
+  if ((s = readpattern ((kind == FALSE ? "Replace" : "Query replace"), 27)) != TRUE)
     return (s);
   strncpy (&tpat[0], &pat[0], NPAT); /* salt it away */
 
   /* ask for the replacement string */
   strncpy (&pat[0], &rpat[0], NPAT); /* set up default string */
-  if ((s = readpattern ("with")) == ABORT)
+  if ((s = readpattern ("with", 27)) == ABORT)
     return (s);
 
   /* move everything to the right place and length them */

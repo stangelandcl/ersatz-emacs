@@ -750,7 +750,7 @@ int mlreplyt (char *prompt, char *buf, int nbuf, char eolchar)
   for (;;)
     {
       /* get a character from the user. if it is a <ret> change it to a <NL> */
-      c = (*term.t_getchar) ();
+        c = (*term.t_getchar) ();
       if (c == 0x0d)
 	c = '\n';
 
