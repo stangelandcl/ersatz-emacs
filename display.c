@@ -6,6 +6,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h> /* exit */
 #include "estruct.h"
 #include "edef.h"
 

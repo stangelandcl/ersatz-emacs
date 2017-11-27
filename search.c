@@ -39,7 +39,7 @@ void expandp (char *srcstr, char *deststr, int maxlength);
  */
 int forwsearch (int f, int n)
 {
-  int status;
+  int status = 0;
 
   if (n == 0)			/* resolve the repeat count */
     n = 1;
@@ -65,7 +65,7 @@ int forwsearch (int f, int n)
 
 int forwhunt (int f, int n)
 {
-  int status;
+  int status = 0;
 
   /* resolve the repeat count */
   if (n == 0)

@@ -11,9 +11,9 @@ CFLAGS=-Wall -O2
 #DUMBCONS= -DFORCE_COLS=80 -DFORCE_ROWS=24
 
 # NetBSD, Linux, and nearly all other POSIX-based enviroments
-LFLAGS= -ltermcap
+#LFLAGS= -ltermcap
 # Try this on some older systems
-#LFLAGS= -lcurses
+LFLAGS= -lncursesw -ltinfow
 # For very early Linux
 #LFLAGS= -lbsd
 

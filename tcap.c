@@ -3,6 +3,7 @@
 #define	termdef	1		/* don't define "term" external */
 
 #include <stdio.h>		/* puts(3), snprintf(3) */
+#include <stdlib.h>             /* exit */
 #include "estruct.h"
 #include "edef.h"
 #undef CTRL
